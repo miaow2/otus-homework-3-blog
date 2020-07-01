@@ -5,8 +5,11 @@ Home
 {% endblock %}
 
 {% block body %}
-<h1 style="text-align: center">Posts</h1>
 <div class="container">
+    {% if posts|length < 1 %}
+    <h1 style="text-align: center">There are no posts yet</h1>
+    {% else %}
+    <h1 style="text-align: center">Posts</h1>
     {% for post in posts%}
     <div>
         <h4 style="text-align: left">{{ post.title }}</h4>
@@ -16,5 +19,6 @@ Home
         <hr />
     </div>
     {% endfor %}
+    {% endif %}
 </div>
 {% endblock %}

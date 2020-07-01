@@ -39,7 +39,7 @@ def load_user(user_id):
 @app.route("/", endpoint="home")
 def index():
     if current_user.is_authenticated:
-        posts = Session.query(Post).order_by(desc(Post.id))
+        posts = Session.query(Post).order_by(desc(Post.id)).all()
         return render_template("index.html", posts=posts, user=current_user)
     return redirect(url_for("auth.login"))
 
