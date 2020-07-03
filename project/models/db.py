@@ -1,9 +1,11 @@
+import os
+
 from sqlalchemy import Column, create_engine, Integer
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
 
 
-engine = create_engine("sqlite:///blog.db")
+engine = create_engine(os.environ.get("DB_URL"))
 
 
 class Base:

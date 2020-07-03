@@ -1,13 +1,9 @@
+import os
+
 from logging import getLogger
 
 from flask import Flask, redirect, render_template, request, url_for
-from flask_login import (
-    LoginManager,
-    current_user,
-    login_user,
-    logout_user,
-    login_required,
-)
+from flask_login import current_user, LoginManager
 from sqlalchemy import desc
 
 
@@ -16,13 +12,11 @@ from models.db import Session
 from views.auth import auth
 from views.post import post
 
+
 logger = getLogger(__name__)
 
-
 app = Flask(__name__)
-app.config.update(
-    DEBUG=True, SECRET_KEY="alsdfbalkfaelfasjfnadlfj23fjn3424nf",
-)
+app.config.update(SECRET_KEY=os.environ.get("FLASK_SECRET_KEY"))
 
 login_manager = LoginManager()
 login_manager.init_app(app)

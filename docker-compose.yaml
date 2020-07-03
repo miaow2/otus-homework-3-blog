@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  app:
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "1m"
+    build:
+      context: .
+    ports:
+      - 5000:5000
+    volumes:
+      - ./db:/app/db
+    environment:
+      FLASK_APP: app
+      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_URL: postgres+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+    entrypoint:
+      - "bash"
+      - "entrypoint.sh"
+    command:
+      - "flask"
+      - "run"
+      - "--host=0.0.0.0"
+    depends_on:
+      - pg
+
+  pg:
+    image: postgres
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "2"
+        max-size: "1m"
+    volumes:
+      - ./db/pg:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
